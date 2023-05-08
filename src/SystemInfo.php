@@ -30,30 +30,42 @@ class SystemInfo
     public function getData()
     {
         $uptime = $this->executeCommand('uptime');
-        $freeMem = $this->executeCommand('free -m | awk \'/Mem:/ {print $4}\'');
+        $freeMem = $this->executeCommand('free -m | grep "Mem:" | awk \'{print $4}\'');
+        $totalRam = round($this->executeCommand('free -t | grep "Mem:" | awk \'{print $2}\'') / 1024, 2);
+        $totalSwap = round($this->executeCommand('free -m | grep "Swap:" | awk \'{print $2}\''), 2);
+        $freeSwap = round($this->executeCommand('free -m | grep "Swap:" | awk \'{print $4}\''), 2);
         $cpuTemp = $this->executeCommand('cat /sys/class/thermal/thermal_zone0/temp');
-        $diskSpace = $this->executeCommand('df -h / | awk \'NR==2 {print $4}\'');
+        $totalDiskSpace = round($this->executeCommand('df --output=size --total | awk \'END {print $1}\'') / 1024 / 1024, 2);
+        $freeDiskSpace = round($this->executeCommand('df --output=avail --total | awk \'END {print $1}\'') / 1024 / 1024, 2);
+        $usedDiskSpace = round($this->executeCommand('df --output=used --total | awk \'END {print $1}\'') / 1024 / 1024, 2);
         $ipAddress = $this->executeCommand('hostname -I');
         $dockerInfo = json_decode($this->executeCommand('docker info --format \'{{json .}}\''), true);
         $dockerContainers = json_decode($this->executeCommand('docker ps --all --no-trunc --format="{{json . }}" | jq --tab -s .'), true);
         $osRelease = $this->executeCommand('cat /etc/os-release | grep PRETTY_NAME | cut -d "=" -f 2-');
-        $cpuUsage = $this->executeCommand('top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk \'{print 100 - $1"%"}\'');
+        $cpuUsage = $this->executeCommand('top -bn1 | grep "Cpu(s)" | awk \'{print $2 + $4}\'');
         $memoryUsage = $this->executeCommand('free | awk \'FNR == 2 {printf "%.2f", $3/$2*100}\'');
         $diskUsage = $this->executeCommand('df -h / | awk \'NR==2 {print $5}\'');
-        $networkInfo = $this->executeCommand('ifconfig -a | awk \'/UP/ {print $1}\' | sed \'s/.$//\' | xargs -n1 ifconfig | awk \'/RX packets/ {print "device " $1 ", RX: " $5 ", TX: " $9}\'');
+        $macAddr = $this->executeCommand("ip addr show $(awk 'NR==3{print $1}' /proc/net/wireless | tr -d :) | awk '/ether/{print $2}'");
+        $totalCores = $this->executeCommand('nproc');
 
         $this->data = array(
             'uptime' => trim($uptime),
             'load_avg' => $this->parseUptime($uptime),
             'free_mem' => $freeMem . 'MB',
+            'total_ram' => $totalRam . 'MB',
+            'total_swap' => $totalSwap . 'MB',
+            'free_swap' => $freeSwap . 'MB',
             'cpu_temp' => $cpuTemp / 1000 . '°C',
-            'disk_space' => $diskSpace,
+            'cpu_cores' => $totalCores,
+            'cpu_usage' => $cpuUsage . '%',
             'ip_address' => $ipAddress,
+            'mac_addr' => $macAddr,
             'os_release' => $osRelease,
-            'cpu_usage' => $cpuUsage,
-            'memory_usage' => $memoryUsage . '%',
             'disk_usage' => $diskUsage,
-            'network_info' => $networkInfo,
+            'disk_space_total' => $totalDiskSpace . 'GB',
+            'disk_space_free' => $freeDiskSpace . 'GB',
+            'disk_space_used' => $usedDiskSpace . 'GB',
+            'disk_space_used_percent' => $memoryUsage . '%',
             'docker_info' => $dockerInfo,
             'docker_containers' => $dockerContainers,
         );
