@@ -5,6 +5,9 @@
     <table>
       <thead>
         <tr>
+        <td class="group-row" colspan="2" style="text-align:center"><h3>Ubuntu Real-Time Docker Containers and System Monitoring on Website</h3></td>
+        </tr>
+        <tr>
           <th>Property</th>
           <th>Value</th>
         </tr>
@@ -38,7 +41,7 @@
                 rows += groupRow;
                 rows += generateRows(value, property);
             } else {
-                const valueString = JSON.stringify(value);
+                const valueString = JSON.stringify(value).replace(/"/g, '');;
                 const propertyRow = rowTemplate.replace('{{property}}', property).replace('{{value}}', valueString);
                 rows += propertyRow;
             }

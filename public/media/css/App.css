@@ -1,13 +1,26 @@
+body{
+    background: black;
+    color: #fff;
+    border: 2px green solid;
+    padding: 10px;
+    margin: 0px;
+    font-family: monospace;
+    font-size: 13px;
+}
+
 table {
     border-collapse: collapse;
     width: 100%;
 }
 th, td {
-    border: 1px solid black;
-    padding: 8px;
+    border: 2px solid black;
+    padding: 2px;
     text-align: left;
 }
 .group-row {
+    font-size: 14px;
     font-weight: bold;
-    background-color: lightgray;
+    background-color: green;
+    text-transform: uppercase;
+    padding: 2px;
 }
