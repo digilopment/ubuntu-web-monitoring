@@ -1,6 +1,10 @@
 ## Change Log
 ### [Unreleased][unreleased]
 
+### [00f9b96] - 2023-05-08
+#### Added
+- reedited base systeminformations
+
 ### [4d97b4f] - 2023-05-08
 #### Added
 - changelog
@@ -14,6 +18,7 @@
 - initial commit
 
 [unreleased]: https://github.com/digilopment/ubuntu-web-monitoring/compare/d7df1a4...HEAD
+[00f9b96]: https://github.com/digilopment/ubuntu-web-monitoring/commit/00f9b96
 [4d97b4f]: https://github.com/digilopment/ubuntu-web-monitoring/commit/4d97b4f
 [bdeaa4c]: https://github.com/digilopment/ubuntu-web-monitoring/commit/bdeaa4c
 [2c2cef7]: https://github.com/digilopment/ubuntu-web-monitoring/commit/2c2cef7
