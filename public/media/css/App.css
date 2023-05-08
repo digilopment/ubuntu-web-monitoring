@@ -1,7 +1,7 @@
 body{
     background: black;
     color: #fff;
-    border: 2px green solid;
+    border: 2px #299dac solid;
     padding: 10px;
     margin: 0px;
     font-family: monospace;
@@ -20,7 +20,7 @@ th, td {
 .group-row {
     font-size: 14px;
     font-weight: bold;
-    background-color: green;
+    background-color: #229e63;
     text-transform: uppercase;
     padding: 2px;
 }
