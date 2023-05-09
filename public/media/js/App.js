@@ -1,6 +1,6 @@
 (function () {
     const url = '/data.php';
-    const interval = 1000000;
+    const interval = 1000;
     const tableTemplate = `
     <table>
       <thead>
