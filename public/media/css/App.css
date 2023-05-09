@@ -13,9 +13,19 @@ table {
     width: 100%;
 }
 th, td {
-    border: 2px solid black;
-    padding: 2px;
+    /*border: 2px solid black;*/
+    padding: 8px;
+    padding-left: 5px;
     text-align: left;
+    max-width: 100%;
+}
+
+tr{
+    border-bottom: 1px dotted #299dac;
+}
+
+td:first-child{
+   width: 300px;
 }
 .group-row {
     font-size: 14px;

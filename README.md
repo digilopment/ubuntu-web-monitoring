@@ -36,4 +36,5 @@ and open browser `http://localhost:8888`
 ```
 
 ##### Ubuntu Real-Time Docker Containers and System Monitoring
-![screen](https://raw.githubusercontent.com/digilopment/ubuntu-web-monitoring/8b5abaead414177aefdfc1ab41f83b3befc19f5b/public/media/img/screen.png)
+![screen](https://raw.githubusercontent.com/digilopment/ubuntu-web-monitoring/8b5abaead414177aefdfc1ab41f83b3befc19f5b/public/media/img/system.png)
+![screen](https://raw.githubusercontent.com/digilopment/ubuntu-web-monitoring/8b5abaead414177aefdfc1ab41f83b3befc19f5b/public/media/img/containers.png)

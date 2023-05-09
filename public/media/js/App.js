@@ -1,11 +1,11 @@
 (function () {
     const url = '/data.php';
-    const interval = 1000;
+    const interval = 1000000;
     const tableTemplate = `
     <table>
       <thead>
         <tr>
-        <td class="group-row" colspan="2" style="text-align:center"><h3>Ubuntu Real-Time Docker Containers and System Monitoring on Website</h3></td>
+        <td class="group-row" colspan="2" style="text-align:left"><h3>Ubuntu Real-Time Docker Containers and System Monitoring on Website</h3></td>
         </tr>
         <tr>
           <th>Property</th>
@@ -41,7 +41,7 @@
                 rows += groupRow;
                 rows += generateRows(value, property);
             } else {
-                const valueString = JSON.stringify(value).replace(/"/g, '');;
+                const valueString = JSON.stringify(value).replace(/"/g, '').replace(/\\/g, "");
                 const propertyRow = rowTemplate.replace('{{property}}', property).replace('{{value}}', valueString);
                 rows += propertyRow;
             }
