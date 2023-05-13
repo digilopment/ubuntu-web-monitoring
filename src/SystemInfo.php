@@ -48,24 +48,70 @@ class SystemInfo
         $macAddr = $this->executeCommand("ip addr show $(awk 'NR==3{print $1}' /proc/net/wireless | tr -d :) | awk '/ether/{print $2}'");
         $totalCores = $this->executeCommand('nproc');
 
+        $cpuMaxFrequency = 'no data';
+        $cpuInfoFile = '/proc/cpuinfo';
+        if (file_exists($cpuInfoFile)) {
+            $cpuInfo = file_get_contents($cpuInfoFile);
+            preg_match_all('/cpu MHz\s+:\s+(\d+)/i', $cpuInfo, $matches);
+
+            if (!empty($matches[1])) {
+                $cpuMaxFrequency = max($matches[1]);
+                //echo "Maximum CPU Frequency: " . $maxFreq . " MHz";
+            }
+        }
+
+        $currentFreq = "no data";
+        $cpuFreqFile = '/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq';
+        if (file_exists($cpuFreqFile)) {
+            $frequency = file_get_contents($cpuFreqFile);
+            $currentFreq = intval($frequency) / 1000; // Convert from kHz to MHz
+        }
+
+        $cpuData = [];
+        if (file_exists($cpuInfoFile)) {
+            $cpuInfo = file_get_contents($cpuInfoFile);
+            $lines = explode("\n", $cpuInfo);
+            foreach ($lines as $line) {
+                $line = trim($line);
+                if (!empty($line)) {
+                    $parts = explode(":", $line, 2);
+                    $key = trim($parts[0]);
+                    $value = isset($parts[1]) ? trim($parts[1]) : '';
+                    $cpuData[$key] = $value;
+                }
+            }
+        }
+
+
         $this->data = array(
-            'uptime' => trim($uptime),
+            'base_info' => [
+                'uptime' => trim($uptime),
+                'ip_address' => $ipAddress,
+                'mac_addr' => $macAddr,
+                'os_release' => $osRelease,
+            ],
             'load_avg' => $this->parseUptime($uptime),
-            'free_mem' => $freeMem . 'MB',
-            'total_ram' => $totalRam . 'MB',
-            'total_swap' => $totalSwap . 'MB',
-            'free_swap' => $freeSwap . 'MB',
-            'cpu_temp' => $cpuTemp / 1000 . '°C',
-            'cpu_cores' => $totalCores,
-            'cpu_usage' => $cpuUsage . '%',
-            'ip_address' => $ipAddress,
-            'mac_addr' => $macAddr,
-            'os_release' => $osRelease,
-            'disk_usage' => $diskUsage,
-            'disk_space_total' => $totalDiskSpace . 'GB',
-            'disk_space_free' => $freeDiskSpace . 'GB',
-            'disk_space_used' => $usedDiskSpace . 'GB',
-            'disk_space_used_percent' => $memoryUsage . '%',
+            'memory_data' => [
+                'free_mem' => $freeMem . 'MB',
+                'total_ram' => $totalRam . 'MB',
+                'total_swap' => $totalSwap . 'MB',
+                'free_swap' => $freeSwap . 'MB',
+            ],
+            'cpu_base' => [
+                'cpu_temp' => $cpuTemp / 1000 . '°C',
+                'cpu_cores' => $totalCores,
+                'cpu_max_frequency' => $cpuMaxFrequency . 'MHz',
+                'cpu_current_frequency' => $currentFreq . 'MHz',
+                'cpu_usage' => $cpuUsage . '%',
+            ],
+            'cpu_all_data' => $cpuData,
+            'disk_data' => [
+                'disk_usage' => $diskUsage,
+                'disk_space_total' => $totalDiskSpace . 'GB',
+                'disk_space_free' => $freeDiskSpace . 'GB',
+                'disk_space_used' => $usedDiskSpace . 'GB',
+                'disk_space_used_percent' => $memoryUsage . '%',
+            ],
             'docker_info' => $dockerInfo,
             'docker_containers' => $dockerContainers,
         );
