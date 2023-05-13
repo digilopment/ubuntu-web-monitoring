@@ -1,6 +1,22 @@
 ## Change Log
 ### [Unreleased][unreleased]
 
+### [ee472c9] - 2023-05-13
+#### Added
+- reload data 1s
+
+### [3ce464c] - 2023-05-09
+#### Added
+- readme images
+
+### [8a62688] - 2023-05-09
+#### Added
+- changelog
+
+### [879f9fb] - 2023-05-09
+#### Added
+- small design changes
+
 ### [075b949] - 2023-05-09
 #### Added
 - changelog
@@ -66,6 +82,10 @@
 - initial commit
 
 [unreleased]: https://github.com/digilopment/ubuntu-web-monitoring/compare/d7df1a4...HEAD
+[ee472c9]: https://github.com/digilopment/ubuntu-web-monitoring/commit/ee472c9
+[3ce464c]: https://github.com/digilopment/ubuntu-web-monitoring/commit/3ce464c
+[8a62688]: https://github.com/digilopment/ubuntu-web-monitoring/commit/8a62688
+[879f9fb]: https://github.com/digilopment/ubuntu-web-monitoring/commit/879f9fb
 [075b949]: https://github.com/digilopment/ubuntu-web-monitoring/commit/075b949
 [7808f94]: https://github.com/digilopment/ubuntu-web-monitoring/commit/7808f94
 [27925ae]: https://github.com/digilopment/ubuntu-web-monitoring/commit/27925ae
