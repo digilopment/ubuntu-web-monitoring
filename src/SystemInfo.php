@@ -81,6 +81,26 @@ class SystemInfo
                 }
             }
         }
+        
+        $capacityFile = '/sys/class/power_supply/BAT0/capacity';
+	$statusFile = '/sys/class/power_supply/BAT0/status';
+
+	// Initialize the battery information array
+	$batteryInfo = [];
+
+	// Check if the capacity file exists
+	if (file_exists($capacityFile)) {
+	    // Read the battery capacity from the sysfs file
+	    $capacity = file_get_contents($capacityFile);
+	    $batteryInfo['Capacity'] = str_replace('n', '', $capacity) . '%';
+	}
+
+	// Check if the status file exists
+	if (file_exists($statusFile)) {
+	    // Read the battery status from the sysfs file
+	    $status = file_get_contents($statusFile);
+	    $batteryInfo['Status'] = $status;
+	}
 
 
         $this->data = array(
@@ -88,8 +108,9 @@ class SystemInfo
                 'uptime' => trim($uptime),
                 'ip_address' => $ipAddress,
                 'mac_addr' => $macAddr,
-                'os_release' => $osRelease,
+                'os_release' => $osRelease
             ],
+            'battery' => $batteryInfo,
             'load_avg' => $this->parseUptime($uptime),
             'memory_data' => [
                 'free_mem' => $freeMem . 'MB',
