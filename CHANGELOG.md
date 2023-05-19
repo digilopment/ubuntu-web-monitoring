@@ -1,6 +1,14 @@
 ## Change Log
 ### [Unreleased][unreleased]
 
+### [5034c71] - 2023-05-19
+#### Added
+- changelog
+
+### [db9b33a] - 2023-05-13
+#### Added
+- pridany komplexny monitoring CPU a pridane kategorie
+
 ### [ee472c9] - 2023-05-13
 #### Added
 - reload data 1s
@@ -82,6 +90,8 @@
 - initial commit
 
 [unreleased]: https://github.com/digilopment/ubuntu-web-monitoring/compare/d7df1a4...HEAD
+[5034c71]: https://github.com/digilopment/ubuntu-web-monitoring/commit/5034c71
+[db9b33a]: https://github.com/digilopment/ubuntu-web-monitoring/commit/db9b33a
 [ee472c9]: https://github.com/digilopment/ubuntu-web-monitoring/commit/ee472c9
 [3ce464c]: https://github.com/digilopment/ubuntu-web-monitoring/commit/3ce464c
 [8a62688]: https://github.com/digilopment/ubuntu-web-monitoring/commit/8a62688
