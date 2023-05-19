@@ -63,6 +63,11 @@
                     console.error('Error:', error);
                 });
     }
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'q') {
+            window.close();
+        }
+    });
     fetchData();
     setInterval(fetchData, interval);
 })();
