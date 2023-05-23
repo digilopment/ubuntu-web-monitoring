@@ -48,14 +48,14 @@ class SystemInfo
         $macAddr = $this->executeCommand("ip addr show $(awk 'NR==3{print $1}' /proc/net/wireless | tr -d :) | awk '/ether/{print $2}'");
         $totalCores = $this->executeCommand('nproc');
 
-        $cpuMaxFrequency = 'no data';
+        $cpuCurrentFrequency = 'no data';
         $cpuInfoFile = '/proc/cpuinfo';
         if (file_exists($cpuInfoFile)) {
             $cpuInfo = file_get_contents($cpuInfoFile);
             preg_match_all('/cpu MHz\s+:\s+(\d+)/i', $cpuInfo, $matches);
 
             if (!empty($matches[1])) {
-                $cpuMaxFrequency = max($matches[1]);
+                $cpuCurrentFrequency = max($matches[1]);
                 //echo "Maximum CPU Frequency: " . $maxFreq . " MHz";
             }
         }
@@ -103,6 +103,22 @@ class SystemInfo
 	}
 
 
+	exec('lscpu | grep MHz', $output);
+	$max = $min = 0;
+	$lines = explode(PHP_EOL, $lines);
+	//var_dump($output);
+	foreach ($output as $line) {
+	    if (strpos($line, 'max') !== false) {
+	       preg_match('/\d{1,4}(?:,\d{3})+/', $line, $matches);
+	       $max = $matches[0];
+	    }
+	    
+	    if (strpos($line, 'min') !== false) {
+	       preg_match('/\d{1,3}(?:,\d{3})+/', $line, $matches);
+	       $min = $matches[0];
+	    }
+	}
+
         $this->data = array(
             'base_info' => [
                 'uptime' => trim($uptime),
@@ -119,11 +135,13 @@ class SystemInfo
                 'free_swap' => $freeSwap . 'MB',
             ],
             'cpu_base' => [
-                'cpu_temp' => $cpuTemp / 1000 . '°C',
-                'cpu_cores' => $totalCores,
-                'cpu_max_frequency' => $cpuMaxFrequency . 'MHz',
-                'cpu_current_frequency' => $currentFreq . 'MHz',
-                'cpu_usage' => $cpuUsage . '%',
+                'temp' => $cpuTemp / 1000 . '°C',
+                'cores' => $totalCores,
+                'max_frequency' => (int) $max . 'MHz',
+                'min_frequency' => (int) $min . 'MHz',
+                'current_frequency' => $cpuCurrentFrequency . 'MHz',
+                //'cpu_current_frequency' => $currentFreq . 'MHz',
+                'usage' => $cpuUsage . '%',
             ],
             'cpu_all_data' => $cpuData,
             'disk_data' => [

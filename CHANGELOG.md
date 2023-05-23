@@ -1,5 +1,7 @@
 ## Change Log
 ### [Unreleased][unreleased]
+#### Changed
+- fixnuty min/max cpu frequency
 
 ### [5034c71] - 2023-05-19
 #### Added
